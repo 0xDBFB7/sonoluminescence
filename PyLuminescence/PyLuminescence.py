@@ -13,11 +13,19 @@ import tkMessageBox
 import json
 from pygame.locals import *
 from pygame.mixer import Sound, get_init, pre_init
-
-#config = open("PyLuminescence.config",'r+')
-set_frequency = 0
+try:
+    config = open("PyLuminescence.config",'r+')
+except:
+    config = open("PyLuminescence.config",'w+')
+    config.close()
+    config = open("PyLuminescence.config",'r+')
+set_frequency = 100
 set_volume = 0.0
+button = ""
+initial_volume = 0.4
 global frequency_range
+key = 0
+global key
 frequency_range = [21000,25000]
 class Note(Sound):
 
@@ -52,8 +60,9 @@ top.title("PyLuminescence")
 
 
 def Tune():
+    global initial_volume
     global set_frequency
-    volume = 0.4
+    volume = initial_volume
     display_volume.configure(text="Volume: " + str(volume))
     temp_best_amplitude=0.0
     temp_best_frequency=0.0
@@ -99,28 +108,86 @@ def Tune():
     set_frequency = temp_best_frequency
     display_percentage.destroy()
 
+def ButtonBack(what):
+    global button
+    print(what)
+    button=what
+
+def Key(event):
+    global key
+    print(event.keysym)
+    key=str(event.keysym)
+    print(key)
 def Ignite():
+    global button
+    global key
+    global set_frequency
+    global set_volume
     if(set_frequency == 0):
         tkMessageBox.showwarning("Tune First","You must run the tuning setup first.")
     else:
-        exit=True
-        def exiter():
-            exit=False
-        e = Tkinter.Button(top, text ="Cancel", command = exiter)
+        e = Tkinter.Button(top, text ="Cancel", command=lambda *args:  ButtonBack('exit'))
         e.grid(row=1, column=4)
-        global set_frequency
-        while(exit):
+        b = Tkinter.Button(top, text ="Fine-tune", command=lambda *args:  ButtonBack('R'))
+        b.grid(row=2, column=4)
+        set_volume=inital_volume
+        Note(set_frequency,set_volume).play(-1)
+        tkMessageBox.showinfo("Inject bubble","Inject a bubble now.")
+        while(button != 'exit'):
+            Note(set_frequency).stop()
             Note(set_frequency,set_volume).play(-1)
             stream.start_stream()
             data=stream.read(2048)
             stream.stop_stream()
             amplitude = (audioop.maxpp(data,2)/65536)*1.41
+            display_volume.configure(text="Volume: " + str(set_volume))
             display_amplitude.configure(text=("Amplitude: %.2f" % amplitude))
             display_frequency.configure(text="Frequency: " + str(set_frequency))
+            top.update()
+            top.update_idletasks()
+            if(key == 'Up'):
+                key = ''
+                set_volume=set_volume+0.005
+            if(key == 'Down'):
+                key = ''
+                set_volume=set_volume-0.005
+            if(key == 'Left'):
+                key = ''
+                set_frequency=set_frequency-1
+            if(key == 'Right'):
+                key = ''
+                set_frequency=set_frequency+1
+            if(key == 'space'):
+                key = ''
+                for frequency in range(set_frequency-20,set_frequency+20,1):
+                    Note(set_frequency).stop()
+                    Note(frequency,set_volume).play(-1)
+                    sleep(0.1)
+                    stream.start_stream()
+                    data=stream.read(2048)
+                    stream.stop_stream()
+                    amplitude = (audioop.maxpp(data,2)/65536)*1.41        
+                    w.create_rectangle(int(((frequency-frequency_range[0])/float(frequency_range[1]-frequency_range[0]))*500.0), 50, int(((frequency-frequency_range[0])/float(frequency_range[1]-frequency_range[0]))*500.0)+1, 50-((amplitude/1.41)*50), fill="red")
+                    w.update()
+                    top.title("PyLuminescence Auto-Tune Fine")
+                    display_percentage.configure(text=str(((frequency-(set_frequency-50))))+"% Fine")
+                    if(amplitude > temp_best_amplitude):
+                        temp_best_amplitude=amplitude
+                        temp_best_frequency=frequency
+                        display_amplitude.configure(text=("Best Amplitude: %.2f" % amplitude))
+                        display_frequency.configure(text=("Best Frequency: "+ str(frequency)))
+                set_frequency = temp_best_frequency
+        b.destroy()
         e.destroy()
 
-Tkinter.Button(top, text ="Tune", command = Tune).grid(row=0, sticky=W)
-Tkinter.Button(top, text ="Ignite", command = Ignite).grid(row=0,column=1, sticky=W)
+top.bind('<Left>', Key)
+top.bind('<Right>', Key)
+top.bind('<Up>', Key)
+top.bind('<Down>', Key)
+top.bind('<space>', Key)
+
+Tuner = Tkinter.Button(top, text ="Tune", command = Tune).grid(row=0, sticky=W)
+Igniter = Tkinter.Button(top, text ="Ignite", command = Ignite).grid(row=0,column=1, sticky=W)
 
 display_amplitude = Label(top, text="")
 display_amplitude.grid(row=0,column=2)
