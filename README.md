@@ -17,7 +17,50 @@ Required parts (total cost ~$40, no/minimal soldering required):
 * A 5-12v to 120v ~2amp transformer. This will be used to drive the transducer. [Reference part](http://www.mouser.com/ProductDetail/Hammond/166K6B/?qs=%2fha2pyFaduicWE%252bPDHDp88Z74tQbXOB3gxOnro9YHf4%3d)
 * A 150ml flask, round/round-bottomed/spherical,distillation/boiling. [Reference.](https://www.amazon.ca/213L12-Karter-Scientific-Florence-Boiling/dp/B006VYY3UC/ref=sr_1_1?s=industrial&ie=UTF8&qid=1472616089&sr=1-1&keywords=150ml+round+bottom)
 * A small piezo disk.
+* A ~50k ohm potentiometer
+* A phono cable.
+* A computer with a sound card capable of at least 96000s/s output, and at least 44100s/s microphone input.
+
+Additionally, you'll need:
 * An airtight mason jar.
 * Distilled water.
 * Epoxy.
 * A small dropper or syringe.
+
+That's it!
+
+### Setup guide ###
+
+Super simple:
+
+Glue the power transducer to the bottom of the flask, glue the sense transducer to the side of the flask, solder the L+R of the phono cable to one wire of the sense transducer, solder the GND of the phono cable to the other wire, solder the potentiometer across the sense transducer and adjust half-way or so.
+
+Connect the 6.3v side of the transformer to the audio amp, connect the 120v side to the power transducer, connect power, connect the audio amp to your computer.
+
+Done!
+
+### Usage guide ###
+
+WARNING: 
+
+The steps below to remove gases from the water involve close contact with very hot boiling water. Scalding is very easy. Be careful, wear baking gloves, and I'm not responsible if anything goes wrong :)
+
+*Put a wooden toothpick into a mason jar.* This prevents superheating and flesh-searing consequences. Don't skip this step.
+Fill to the brim with distilled water.
+
+Put in a microwave and wait ~4m until the water is vigorously boiling.
+
+*Here's the dangerous bit.* Wearing thick rubber gloves, quickly open the microwave and screw the lid of the mason jar on very tightly.
+
+Wait to cool for ~10 minutes.
+
+Place in a fridge, and wait until the jar is quite cold: >30 min, but never wait longer than ~3 hours.
+
+Water's degassed!
+
+Take out the water, and very gently (without stirring up bubbles) pour it into the flask. You may find it helpful to pour down the side of the flask to avoid bubbles.
+
+Turn the audio amplifier to ~6 watts. Connect your computer. Run PyLuminescence. Click the "Tune" button. You should see a graph with a set of side lobes form, with one major lobe in the center. This may take a minute.
+
+
+
