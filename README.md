@@ -39,6 +39,23 @@ Connect the 6.3v side of the transformer to the audio amp, connect the 120v side
 
 Done!
 
+### Installation guide ###
+
+*WINDOWS:*
+
+I'm going to publish a .exe in a few commits. 
+
+*LINUX:*
+
+PyLu runs under python 2.7, with tkinter.
+
+You also need:
+    sudo apt-get install python-pyaudio
+
+And you also need to install PyGame.
+
+
+
 ### Usage guide ###
 
 WARNING: 
@@ -56,11 +73,9 @@ Wait to cool for ~10 minutes.
 
 Place in a fridge, and wait until the jar is quite cold: >30 min, but never wait longer than ~3 hours.
 
-Water's degassed!
+Take out the water and remove the cap: you should hear a pop of a vacuum. Very gently (without stirring up bubbles) pour it into the flask. You may find it helpful to pour down the inside of the flask to avoid bubbles.
 
-Take out the water, and very gently (without stirring up bubbles) pour it into the flask. You may find it helpful to pour down the side of the flask to avoid bubbles.
-
-Turn the audio amplifier to ~6 watts. Connect your computer. Run PyLuminescence. Click the "Tune" button. You should see a graph with a set of side lobes form, with one major lobe in the center. This may take a minute.
+Turn the audio amplifier to ~10 watts. Connect your computer. Run PyLuminescence. Click the "Tune" button, and wait for the coarse and fine tuning to complete. You should see a graph with a set of side lobes form, with one major lobe in the center.
 
 
 
