@@ -88,7 +88,7 @@ Behold!
 
 Not working? Post an issue, or better yet, drop by to the community at 
 
-[/r/sonoluminescence](reddit.com/r/sonoluminescence)
+[/r/sonoluminescence](https://reddit.com/r/sonoluminescence)
 
 
 
