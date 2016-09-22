@@ -44,19 +44,24 @@ Done!
 
 *WINDOWS:*
 
-I'm going to publish a .exe in a few commits, once I get a few bugs worked out. Stay tuned!
+I was planning on publishing an EXE, but I don't know how to include PortAudio. 
+
+See linux.
 
 *LINUX:*
 
 Go download as zip, or do a git clone from this repo.
 
-PyLu runs under python 2.7, with tkinter.
+PyLu runs under python 2.7.
 
 You also need:
     sudo apt-get install python-pyaudio
 
-And you also need to install PyGame.
+or 
+    pip install pyaudio
 
+and also 
+    pip install pygame
 
 
 ### Usage guide ###
@@ -80,9 +85,13 @@ Take out the water and remove the cap: you should hear a pop of a vacuum. Very g
 
 Turn the audio amplifier to ~10 watts. Connect your computer. Run PyLuminescence. Click the "Tune" button, and wait for the coarse and fine tuning to complete. You should see a graph with a set of side lobes form, with one major lobe in the center.
 
-After tuning is finished, click the ignite button. Position a small dropper just above the water's surface, and squirt a bit of air onto the surface; this should inject a few bubbles into the mixture. Press OK. 
+After tuning is finished, click the ignite button. When requested, position a small dropper just above the water's surface, and squirt a bit of air onto the surface; this should inject a few bubbles into the mixture. Press OK. 
+
+Hold the up arrow key while watching the sono chamber. Once you see the bubble light, press the spacebar.
 
 Behold!
+
+If the auto-tuning algorithm isn't working for you, use the left and right arrow keys to change frequency, and the up and down arrow keys to change amplitude.
 
 ### Help! ###
 
