@@ -14,18 +14,22 @@ import json
 from pygame.locals import *
 from pygame.mixer import Sound, get_init, pre_init
 try:
-    config = open("PyLuminescence.config",'r+')
+    # global config
+    # config = json.loads(open("./PyLuminescence.config",'r+').read())
+    # print(config)
+    print(open("./PyLuminescence.config",'r+').read())
 except:
-    config = open("PyLuminescence.config",'w+')
+    config = open("./PyLuminescence.config",'w+')
+    config.write("{}")
     config.close()
-    config = open("PyLuminescence.config",'r+')
+    config = json.loads(open("PyLuminescence.config",'r+').read())
 set_frequency = 100
 set_volume = 0.0
 button = ""
 initial_volume = 0.4
 global frequency_range
-key = 0
 global key
+key = 0
 frequency_range = [21000,25000]
 class Note(Sound):
 
@@ -122,6 +126,7 @@ def Ignite():
     global button
     global key
     global set_frequency
+    global initial_volume
     global set_volume
     if(set_frequency == 0):
         tkMessageBox.showwarning("Tune First","You must run the tuning setup first.")
@@ -130,9 +135,14 @@ def Ignite():
         e.grid(row=1, column=4)
         b = Tkinter.Button(top, text ="Fine-tune", command=lambda *args:  ButtonBack('R'))
         b.grid(row=2, column=4)
-        set_volume=inital_volume
+        set_volume=initial_volume
         Note(set_frequency,set_volume).play(-1)
         tkMessageBox.showinfo("Inject bubble","Inject a bubble now.")
+        mode = False
+        desired_amplitude = 0
+        display_status = Label(top, text="")
+        display_status.grid(row=0,column=1)
+        display_status.configure(text="Status: Manual")    
         while(button != 'exit'):
             Note(set_frequency).stop()
             Note(set_frequency,set_volume).play(-1)
@@ -145,6 +155,25 @@ def Ignite():
             display_frequency.configure(text="Frequency: " + str(set_frequency))
             top.update()
             top.update_idletasks()
+
+            if(amplitude < desired_amplitude and mode):
+                max_amplitude_temp = 0
+                display_status.configure(text="Status: Scanning")
+                for i in range(set_frequency-5,set_frequency+15):
+                    Note(i).stop()
+                    Note(i,set_volume).play(-1)
+                    stream.start_stream()
+                    data=stream.read(2048)
+                    stream.stop_stream()
+                    amplitude = (audioop.maxpp(data,2)/65536)*1.41
+                    if(amplitude > max_amplitude_temp):
+                        max_amplitude_temp = amplitude
+                        set_frequency = i
+                    display_frequency.configure(text="Frequency: " + str(i))
+                if(amplitude < desired_amplitude):
+                    set_volume+=0.02
+            elif(mode) :
+                display_status.configure(text="Status: Ampl. Lock")    
             if(key == 'Up'):
                 key = ''
                 set_volume=set_volume+0.005
@@ -158,29 +187,34 @@ def Ignite():
                 key = ''
                 set_frequency=set_frequency+1
             if(key == 'space'):
-                key = ''
-                for frequency in range(set_frequency-20,set_frequency+20,1):
-                    Note(set_frequency).stop()
-                    Note(frequency,set_volume).play(-1)
-                    sleep(0.1)
-                    stream.start_stream()
-                    data=stream.read(2048)
-                    stream.stop_stream()
-                    amplitude = (audioop.maxpp(data,2)/65536)*1.41        
-                    w.create_rectangle(int(((frequency-frequency_range[0])/float(frequency_range[1]-frequency_range[0]))*500.0), 50, int(((frequency-frequency_range[0])/float(frequency_range[1]-frequency_range[0]))*500.0)+1, 50-((amplitude/1.41)*50), fill="red")
-                    w.update()
-                    top.title("PyLuminescence Auto-Tune Fine")
-                    display_percentage.configure(text=str(((frequency-(set_frequency-50))))+"% Fine")
-                    if(amplitude > temp_best_amplitude):
-                        temp_best_amplitude=amplitude
-                        temp_best_frequency=frequency
-                        display_amplitude.configure(text=("Best Amplitude: %.2f" % amplitude))
-                        display_frequency.configure(text=("Best Frequency: "+ str(frequency)))
-                set_frequency = temp_best_frequency
+                mode = not mode
+                desired_amplitude = amplitude
+                if(mode):
+                    display_status.configure(text="Status: Ampl. Lock")    
+                # key = ''
+                # for frequency in range(set_frequency-20,set_frequency+20,1):
+                #     Note(set_frequency).stop()
+                #     Note(frequency,set_volume).play(-1)
+                #     sleep(0.1)
+                #     stream.start_stream()
+                #     data=stream.read(2048)  
+                #     stream.stop_stream()
+                #     amplitude = (audioop.maxpp(data,2)/65536)*1.41        
+                #     w.create_rectangle(int(((frequency-frequency_range[0])/float(frequency_range[1]-frequency_range[0]))*500.0), 50, int(((frequency-frequency_range[0])/float(frequency_range[1]-frequency_range[0]))*500.0)+1, 50-((amplitude/1.41)*50), fill="red")
+                #     w.update()
+                #     top.title("PyLuminescence Auto-Tun e Fine")
+                #     display_percentage.configure(text=str(((frequency-(set_frequency-50))))+"% Fine")
+                #     if(amplitude > temp_best_amplitude):
+                #         temp_best_amplitude=amplitude
+                #         temp_best_frequency=frequency
+                #         display_amplitude.configure(text=("Best Amplitude: %.2f" % amplitude))
+                #         display_frequency.configure(text=("Best Frequency: "+ str(frequency)))
+                # set_frequency = temp_best_frequency
         b.destroy()
         e.destroy()
 
 top.bind('<Left>', Key)
+top.bind('<R>', Key)
 top.bind('<Right>', Key)
 top.bind('<Up>', Key)
 top.bind('<Down>', Key)
