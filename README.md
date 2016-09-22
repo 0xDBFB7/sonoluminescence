@@ -20,7 +20,7 @@ Required parts (total cost ~$40, no/minimal soldering required):
 * A small piezo disk [Reference](https://www.sparkfun.com/products/10293) (be careful, these are pretty fragile!)
 * A ~200k ohm potentiometer.
 * Two phono cables.
-* A computer with a sound card capable of at least 96000bps output, and at least 44100bps microphone input.
+* A computer with a sound card capable of at least 96000bps output and microphone input. (many can't!)
 
 Additionally, you'll need:
 * An airtight mason jar.
