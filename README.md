@@ -2,7 +2,7 @@
 
 A simple GUI with sound output to control sonoluminescence systems.
 ---------------------
-This is very much still in development. It's operationalish right now, so you can try it out.
+This program is kind of broken right now, and probably needs a re-write. I don't really have enough time to maintain it. You can use a standard audio signal generator to run systems.
 ---------------------
 
 Sonoluminescence is an interesting phenomenon in which certain conditions can make water glow. If you're here, you probably know all about it. Let's dive in.
